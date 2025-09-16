@@ -1,6 +1,7 @@
 package main
 
 import (
+	"CashMini/config"
 	"context"
 	"fmt"
 	"log"
@@ -38,7 +39,7 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 }
 
 func main() {
-
+	config.Load()
 	server := server.NewServer()
 
 	// Create a done channel to signal when the shutdown is complete

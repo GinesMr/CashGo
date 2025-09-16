@@ -1,6 +1,8 @@
 package server
 
 import (
+	"CashMini/internal/handler"
+	"CashMini/internal/utils"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -11,15 +13,17 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"}, // Add your frontend URL
+		AllowOrigins:     []string{"http://localhost:5173"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
 		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type"},
-		AllowCredentials: true, // Enable cookies/auth
+		AllowCredentials: true,
 	}))
-
-	r.GET("/", s.HelloWorldHandler)
-
-	r.GET("/health", s.healthHandler)
+	{
+		//This is only for testing "FOR NOW"
+		public := r.Group("/test")
+		public.GET(utils.RouteTest, handler.RegisterUser)
+		public.GET(utils.RouteLogin, func(c *gin.Context) {})
+	}
 
 	return r
 }
