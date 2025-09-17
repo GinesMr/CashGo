@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"CashMini/internal/models"
+	"CashMini/internal/user/models"
 	"CashMini/internal/utils"
 	"database/sql"
 )
@@ -19,6 +19,7 @@ func (r *UserRepository) CreateUser(user *models.UserModel) error {
 	return r.db.QueryRow(utils.CREATE_USER_QUERY,
 		user.Username,
 		user.Password,
+		user.Email,
 	).Scan(&user.ID)
 }
 func (r *UserRepository) ExistsByUsername(username string) (bool, error) {

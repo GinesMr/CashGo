@@ -18,10 +18,14 @@ type Service interface {
 	// Health returns a map of health status information.
 	// The keys and values in the map are service-specific.
 	Health() map[string]string
-
+	DB() *sql.DB
 	// Close terminates the database connection.
 	// It returns an error if the connection cannot be closed.
 	Close() error
+}
+
+func (s *service) DB() *sql.DB {
+	return s.db
 }
 
 type service struct {
@@ -35,7 +39,15 @@ func New() Service {
 	if dbInstance != nil {
 		return dbInstance
 	}
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&search_path=%s", config.App.DBUser, config.App.DBPassword, config.App.DBHost, config.App.DBPort, config.App.DBName, config.App.DBSchema)
+	connStr := fmt.Sprintf(
+		"postgres://%s:%s@%s:%d/%s?sslmode=disable&search_path=%s",
+		config.App.DBUser,
+		config.App.DBPassword,
+		config.App.DBHost,
+		config.App.DBPort,
+		config.App.DBName,
+		config.App.DBSchema,
+	)
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
 		log.Fatal(err)

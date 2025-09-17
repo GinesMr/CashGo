@@ -1,8 +1,8 @@
 package services
 
 import (
-	"CashMini/internal/models"
-	"CashMini/internal/repository"
+	"CashMini/internal/user/models"
+	"CashMini/internal/user/repository"
 	"errors"
 )
 
@@ -13,7 +13,8 @@ type UserService struct {
 func NewUserService(userRepo *repository.UserRepository) *UserService {
 	return &UserService{userRepo}
 }
-func (s *UserService) CreateUser(username, password string) (*models.UserModel, error) {
+
+func (s *UserService) CreateUser(username, password, email string) (*models.UserModel, error) {
 	exist, err := s.userRepo.ExistsByUsername(username)
 	if err != nil {
 		return nil, err
@@ -24,6 +25,7 @@ func (s *UserService) CreateUser(username, password string) (*models.UserModel, 
 	user := models.UserModel{
 		Username: username,
 		Password: password,
+		Email:    email,
 	}
 	err = s.userRepo.CreateUser(&user)
 	if err != nil {
