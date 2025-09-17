@@ -21,3 +21,11 @@ func (r *UserRepository) CreateUser(user *models.UserModel) error {
 		user.Password,
 	).Scan(&user.ID)
 }
+func (r *UserRepository) ExistsByUsername(username string) (bool, error) {
+	var exists bool
+	err := r.db.QueryRow(utils.FIND_USERNAME_QUERY, username).Scan(&exists)
+	if err != nil {
+		return false, err
+	}
+	return exists, nil
+}

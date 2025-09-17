@@ -21,7 +21,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	{
 		//This is only for testing "FOR NOW"
 		public := r.Group("/test")
-		public.GET(utils.RouteTest, handler.RegisterUser)
+		public.POST(utils.RouteTest, handler.RegisterUser)
 		public.GET(utils.RouteLogin, func(c *gin.Context) {})
 	}
 
