@@ -3,6 +3,7 @@ package services
 import (
 	"CashMini/internal/user/models"
 	"CashMini/internal/user/repository"
+	passwordHashing "CashMini/internal/utils/hasher"
 	"errors"
 )
 
@@ -22,9 +23,13 @@ func (s *UserService) CreateUser(username, password, email string) (*models.User
 	if exist {
 		return nil, errors.New("user already exists")
 	}
+	passwordHash, err := passwordHashing.HashPassword(password)
+	if err != nil {
+		return nil, err
+	}
 	user := models.UserModel{
 		Username: username,
-		Password: password,
+		Password: passwordHash,
 		Email:    email,
 	}
 	err = s.userRepo.CreateUser(&user)
