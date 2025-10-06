@@ -39,3 +39,11 @@ func (s *UserService) CreateUser(username, password, email string) (*models.User
 
 	return &user, nil
 }
+func (s *UserService) DeleteUserByUsernamePassword(username string, password string) bool {
+	err := s.userRepo.DeleteUserByUsernamePassword(username, password)
+	if err != nil {
+		return false
+	}
+	return true
+
+}

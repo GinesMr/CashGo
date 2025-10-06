@@ -33,3 +33,19 @@ func (h *UserHandler) RegisterUser(c *gin.Context) {
 		"username": user.Username,
 	})
 }
+func (h *UserHandler) DeleteUserByUsernamePassword(c *gin.Context) {
+	var request dtos.DeleteUserRequest
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+		return
+	}
+	err := h.userService.CreateUser(request.Username, request.Password, request.Email)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"User deleted": "true",
+	})
+}

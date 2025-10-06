@@ -1,4 +1,4 @@
-/infra/terraform/        # infra aquí
+/infra/terraform/        
 main.tf
 provider.tf
 variables.tf
